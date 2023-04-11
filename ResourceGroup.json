@@ -9,21 +9,21 @@
     }
   },
   "parameters": {
-    "location": {
+    "region": {
       "type": "string",
-      "defaultValue": "canadacentral"
+      "defaultValue": "${{ env.REGION }}"
     },
-    "rgname": {
+    "resource_group_name": {
       "type": "string",
-      "defaultValue": "DINOSMILESSSSSSS"
+      "defaultValue": "${{ env.RESOURCE_GROUP_NAME }}"
     }
   },
   "resources": [
     {
       "type": "Microsoft.Resources/resourceGroups",
       "apiVersion": "2021-04-01",
-      "name": "[parameters('rgname')]",
-      "location": "[parameters('location')]"
+      "name": "[parameters('resource_group_name')]",
+      "location": "[parameters('region')]"
     }
   ]
 }
