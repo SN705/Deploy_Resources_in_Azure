@@ -1,13 +1,9 @@
-#For every subsequent deployment append the deployment name (e.g., --name RGAttempt3)
-#in the bottom command.
-
-#Note that location is overridden by the location value in ARM template, not
-#this YAML file (i.e., --location eastus gets overridden by whatever is in the JSON file)
-
 env:
+  REPOSITORY: "Deploy_Resources_in_Azure"
+  RESOURCE_GROUP_BRANCH: "Create_Resource_Group"
   RESOURCE_GROUP_FILE_NAME: "ResourceGroup"
 
-name: Azure Resources Deployment
+name: Azure Resources Deployment for Dino Smiles
 
 on:
   push:
@@ -34,5 +30,4 @@ jobs:
           inlineScript: |
             az login --service-principal -u ${{ secrets.DINO_SMILES_CLIENT_ID }} -p ${{ secrets.DINO_SMILES_SECRET_VALUE }} --tenant ${{ secrets.DINO_SMILES_TENANT_ID }}
             az account set --subscription ${{ secrets.DINO_SMILES_SUBSCRIPTION_ID }}
-            az deployment sub create --name resourcegroupdeployment --location eastus --template-uri https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/main/Create_Resource_Group/${{ env.RESOURCE_GROUP_FILE_NAME }}.json
-          
+            az deployment sub create --name Deployment1 --location eastus --template-uri https://raw.githubusercontent.com/SN705/${{ env.REPOSITORY }}/${{ env.RESOURCE_GROUP_BRANCH }}/${{ env.RESOURCE_GROUP_FILE_NAME }}.json
