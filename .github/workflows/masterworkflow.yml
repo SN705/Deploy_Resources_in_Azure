@@ -5,14 +5,15 @@
 #this YAML file (i.e., --location eastus gets overridden by whatever is in the JSON file)
 
 env:
-  JSON_FILE_NAME: "ResourceGroup"
+  RESOURCE_GROUP_FILE_NAME: "ResourceGroup"
 
-name: Azure Resource Group Subscription-Level Deployment
+name: Azure Resources Deployment
 
 on:
   push:
     branches:
       - main
+      - Create_Resource_Group
 
 permissions:
   id-token: write
@@ -31,7 +32,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-            az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-            az deployment sub create --name RGAttempt3 --location eastus --template-uri https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/main/${{ env.JSON_FILE_NAME }}.json
+            az login --service-principal -u ${{ secrets.DINO_SMILES_CLIENT_ID }} -p ${{ secrets.DINO_SMILES_SECRET_VALUE }} --tenant ${{ secrets.DINO_SMILES_TENANT_ID }}
+            az account set --subscription ${{ secrets.DINO_SMILES_SUBSCRIPTION_ID }}
+            az deployment sub create --name resourcegroupdeployment --location eastus --template-uri https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/main/Create_Resource_Group/${{ env.RESOURCE_GROUP_FILE_NAME }}.json
           
