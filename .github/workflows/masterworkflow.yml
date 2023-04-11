@@ -1,1 +1,37 @@
+#For every subsequent deployment append the deployment name (e.g., --name RGAttempt3)
+#in the bottom command.
 
+#Note that location is overridden by the location value in ARM template, not
+#this YAML file (i.e., --location eastus gets overridden by whatever is in the JSON file)
+
+env:
+  JSON_FILE_NAME: "ResourceGroup"
+
+name: Azure Resource Group Subscription-Level Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          path: repo
+
+      - name: Install and login to Azure
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+            az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+            az deployment sub create --name RGAttempt3 --location eastus --template-uri https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/main/${{ env.JSON_FILE_NAME }}.json
+          
