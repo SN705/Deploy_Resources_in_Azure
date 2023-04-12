@@ -29,4 +29,4 @@ jobs:
           inlineScript: |
             az login --service-principal -u ${{ secrets.DINO_SMILES_CLIENT_ID }} -p ${{ secrets.DINO_SMILES_SECRET_VALUE }} --tenant ${{ secrets.DINO_SMILES_TENANT_ID }}
             az account set --subscription ${{ secrets.DINO_SMILES_SUBSCRIPTION_ID }}
-            az deployment sub create --name Deployment1 --location canadacentral --template-uri https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/${{ env.RESOURCE_GROUP_BRANCH }}/${{ env.RESOURCE_GROUP_FILE_NAME }}.json --parameters @Deploy_Resources_in_Azure/parameters.json
+            az deployment sub create --name Deployment1 --location canadacentral --template-uri https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/${{ env.RESOURCE_GROUP_BRANCH }}/${{ env.RESOURCE_GROUP_FILE_NAME }}.json --parameters @parameters.json
