@@ -7,8 +7,8 @@ name: Azure Resources Deployment for Dino Smiles
 on:
   push:
     branches:
+      - *
       - main
-      - Create_Resource_Group
 
 permissions:
   id-token: write
