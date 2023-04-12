@@ -7,8 +7,8 @@ name: Azure Resources Deployment for Dino Smiles
 on:
   push:
     branches:
-      - main
-      - Create_Resource_Group
+      - '*'
+      - 'main'
 
 permissions:
   id-token: write
@@ -29,6 +29,6 @@ jobs:
           inlineScript: |
             az login --service-principal -u ${{ secrets.DINO_SMILES_CLIENT_ID }} -p ${{ secrets.DINO_SMILES_SECRET_VALUE }} --tenant ${{ secrets.DINO_SMILES_TENANT_ID }}
             az account set --subscription ${{ secrets.DINO_SMILES_SUBSCRIPTION_ID }}
-            az deployment sub create --name Deployment2 --location ${{ env.JSON_FILE_REGION }} --template-uri \
+            az deployment sub create --name Deployment3 --location canadacentral --template-uri \
               https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/${{ env.RESOURCE_GROUP_BRANCH }}/${{ env.RESOURCE_GROUP_FILE_NAME }}.json \
-              --parameters @Create_Resource_Group/parameters.json
+              --parameters https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/Create_Resource_Group/parameters.json
