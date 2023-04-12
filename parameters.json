@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "region": {
-        "value": "centralcanada"
+        "value": "canadacentral"
       },
       "resource_group_name": {
         "value": "DINOSMILEZZZZZ"
