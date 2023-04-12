@@ -31,4 +31,4 @@ jobs:
             az account set --subscription ${{ secrets.DINO_SMILES_SUBSCRIPTION_ID }}
             az deployment sub create --name Deployment3 --location canadacentral --template-uri \
               https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/${{ env.RESOURCE_GROUP_BRANCH }}/${{ env.RESOURCE_GROUP_FILE_NAME }}.json \
-              --parameters @Create_Resource_Group/parameters.json
+              --parameters-uri https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/Create_Resource_Group/parameters.json
