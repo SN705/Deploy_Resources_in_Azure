@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "region": {
-        "value": "${{ env.REGION }}"
+        "value": "${{ secret.REGION }}"
       },
       "resource_group_name": {
-        "value": "${{ env.RESOURCE_GROUP_NAME }}"
+        "value": "${{ secret.RESOURCE_GROUP_NAME }}"
       }
     }
 }
