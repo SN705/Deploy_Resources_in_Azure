@@ -23,14 +23,6 @@ jobs:
         with:
           path: repo
       
-      - name: Set environment variables from JSON parameter file
-        env:
-          REGION: ${{ secrets.REGION }}
-          RESOURCE_GROUP_NAME: ${{ secrets.RESOURCE_GROUP_NAME }}
-        run: |
-          export REGION=$(echo $REGION | jq -r '.region')
-          export RESOURCE_GROUP_NAME=$(echo $RESOURCE_GROUP_NAME | jq -r '.resource_group_name')
-      
       - name: Install and login to Azure
         uses: azure/CLI@v1
         with:
