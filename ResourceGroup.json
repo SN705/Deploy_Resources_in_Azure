@@ -10,12 +10,10 @@
   },
   "parameters": {
     "region": {
-      "type": "string",
-      "defaultValue": "${{ env.REGION }}"
+      "type": "string"
     },
     "resource_group_name": {
-      "type": "string",
-      "defaultValue": "${{ env.RESOURCE_GROUP_NAME }}"
+      "type": "string"
     }
   },
   "resources": [
