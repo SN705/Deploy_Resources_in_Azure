@@ -5,7 +5,7 @@ env:
     RESOURCE_GROUP_PARAMETERS_FILE_NAME: "parameters.json"
     WEB_SERVER_FILE_NAME: "WebServer.json"
     RESOURCE_GROUP_NAME: "DSRG1"
-    RESOURCE_GROUP_REGION: "canadacentral"
+    RESOURCE_GROUP_REGION: "eastus"
     METADATA_REGION: "canadacentral"
   
   name: Azure Resources Deployment for Dino Smiles
