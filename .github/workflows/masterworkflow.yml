@@ -31,5 +31,5 @@ jobs:
             az deployment sub create --name Deployment4 --location canadacentral --template-uri \
               https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/${{ env.RESOURCE_GROUP_BRANCH }}/${{ env.RESOURCE_GROUP_FILE_NAME }}.json \
               --parameters https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/main/parameters.json
-
-              
+            az deployment group create --resource-group DINOOOOOOOOOOOOO --template-uri \
+              https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/${{ env.RESOURCE_GROUP_BRANCH }}/${{ env.WEB_SERVER_FILE_NAME }}
