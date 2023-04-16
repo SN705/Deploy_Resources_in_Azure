@@ -1,24 +1,18 @@
 env:
-  DEPLOYMENT_NAME: "Deployment4"
   RESOURCE_GROUP_BRANCH: "main"
-  RESOURCE_GROUP_FILE_NAME: "ResourceGroup.json"
-  RESOURCE_GROUP_PARAMETERS_FILE_NAME: "parameters.json"
-  WEB_SERVER_FILE_NAME: "WebServer.json"
-  RESOURCE_GROUP_NAME: "DSRG1"
-  RESOURCE_GROUP_REGION: "canadacentral"
-  METADATA_REGION: "canadacentral"
-  
+  RESOURCE_GROUP_FILE_NAME: "ResourceGroup"
+
 name: Azure Resources Deployment for Dino Smiles
-  
+
 on:
   push:
     branches:
       - 'main'
-  
+
 permissions:
   id-token: write
   contents: read
-  
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -34,8 +28,8 @@ jobs:
           inlineScript: |
             az login --service-principal -u ${{ secrets.DINO_SMILES_CLIENT_ID }} -p ${{ secrets.DINO_SMILES_SECRET_VALUE }} --tenant ${{ secrets.DINO_SMILES_TENANT_ID }}
             az account set --subscription ${{ secrets.DINO_SMILES_SUBSCRIPTION_ID }}
-            az deployment sub create --name ${{ env.DEPLOYMENT_NAME }} --location ${{ env.METADATA_REGION }} --template-uri \
-              https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/${{ env.RESOURCE_GROUP_BRANCH }}/${{ env.RESOURCE_GROUP_FILE_NAME }} \
-              --parameters https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/${{ env.RESOURCE_GROUP_BRANCH }}/${{ env.RESOURCE_GROUP_PARAMETERS_FILE_NAME }}
-            az deployment group create --resource-group DSRG1 --template-uri \
-              https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/${{ env.RESOURCE_GROUP_BRANCH }}/${{ env.WEB_SERVER_FILE_NAME }}
+            az deployment sub create --name Deployment4 --location canadacentral --template-uri \
+              https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/${{ env.RESOURCE_GROUP_BRANCH }}/${{ env.RESOURCE_GROUP_FILE_NAME }}.json \
+              --parameters https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/main/parameters.json
+
+              
