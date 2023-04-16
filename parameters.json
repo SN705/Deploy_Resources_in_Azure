@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "region": {
-        "value": "${{ env.RESOURCE_GROUP_REGION }}"
+        "value": "canadacentral"
       },
       "resource_group_name": {
-        "value": "${{ env.RESOURCE_GROUP_NAME }}"
+        "value": "DINOOOOOOOOOOOOO"
       }
     }
   }
