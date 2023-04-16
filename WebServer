@@ -1,0 +1,278 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.16.1.55165",
+      "templateHash": "16556634178895096552"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "canadacentral"
+    },
+    "vnetName": {
+      "type": "string",
+      "defaultValue": "Dino_Smiles_VNT1"
+    },
+    "subnetName": {
+      "type": "string",
+      "defaultValue": "Dino_Smiles_SBNT1"
+    },
+    "nsgName": {
+      "type": "string",
+      "defaultValue": "Dino_Smiles_NSG1"
+    },
+    "addressPrefix": {
+      "type": "string",
+      "defaultValue": "172.16.0.0/19"
+    },
+    "subnetPrefix": {
+      "type": "string",
+      "defaultValue": "172.16.0.0/20"
+    },
+    "vmName": {
+      "type": "string",
+      "defaultValue": "DinoSmilesVM1"
+    },
+    "adminUsername": {
+      "type": "string",
+      "defaultValue": "DS-Admin"
+    },
+    "adminPassword": {
+      "type": "string",
+      "defaultValue": "KRNv53f7fAXe"
+    },
+    "osDiskType": {
+      "type": "string",
+      "defaultValue": "Standard_LRS"
+    },
+    "protocolName1": {
+      "type": "string",
+      "defaultValue": "AllowHTTP"
+    },
+    "protocolName2": {
+      "type": "string",
+      "defaultValue": "AllowHTTPS"
+    },
+    "protocolName3": {
+      "type": "string",
+      "defaultValue": "AllowRDP"
+    },
+    "portNumber1": {
+      "type": "string",
+      "defaultValue": "80"
+    },
+    "portNumber2": {
+      "type": "string",
+      "defaultValue": "443"
+    },
+    "portNumber3": {
+      "type": "string",
+      "defaultValue": "3389"
+    },
+    "priorityValue1": {
+      "type": "int",
+      "defaultValue": 100
+    },
+    "priorityValue2": {
+      "type": "int",
+      "defaultValue": 101
+    },
+    "priorityValue3": {
+      "type": "int",
+      "defaultValue": 102
+    },
+    "protocol": {
+      "type": "string",
+      "defaultValue": "Tcp"
+    },
+    "all": {
+      "type": "string",
+      "defaultValue": "*"
+    },
+    "direction": {
+      "type": "string",
+      "defaultValue": "Inbound"
+    },
+    "access": {
+      "type": "string",
+      "defaultValue": "allow"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2021-02-01",
+      "name": "[parameters('vnetName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('addressPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[parameters('subnetName')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnetPrefix')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2021-02-01",
+      "name": "[parameters('nsgName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "[parameters('protocolName1')]",
+            "properties": {
+              "protocol": "[parameters('protocol')]",
+              "sourcePortRange": "[parameters('all')]",
+              "destinationPortRange": "[parameters('portNumber1')]",
+              "access": "[parameters('access')]",
+              "direction": "[parameters('direction')]",
+              "priority": "[parameters('priorityValue1')]",
+              "sourceAddressPrefix": "[parameters('all')]",
+              "destinationAddressPrefix": "[parameters('all')]"
+            }
+          },
+          {
+            "name": "[parameters('protocolName2')]",
+            "properties": {
+              "protocol": "[parameters('protocol')]",
+              "sourcePortRange": "[parameters('all')]",
+              "destinationPortRange": "[parameters('portNumber2')]",
+              "access": "[parameters('access')]",
+              "direction": "[parameters('direction')]",
+              "priority": "[parameters('priorityValue2')]",
+              "sourceAddressPrefix": "[parameters('all')]",
+              "destinationAddressPrefix": "[parameters('all')]"
+            }
+          },
+          {
+            "name": "[parameters('protocolName3')]",
+            "properties": {
+              "protocol": "[parameters('protocol')]",
+              "sourcePortRange": "[parameters('all')]",
+              "destinationPortRange": "[parameters('portNumber3')]",
+              "access": "[parameters('access')]",
+              "direction": "[parameters('direction')]",
+              "priority": "[parameters('priorityValue3')]",
+              "sourceAddressPrefix": "[parameters('all')]",
+              "destinationAddressPrefix": "[parameters('all')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2021-02-01",
+      "name": "[format('{0}/{1}', parameters('vnetName'), parameters('subnetName'))]",
+      "properties": {
+        "addressPrefix": "[parameters('subnetPrefix')]",
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
+        },
+        "privateEndpointNetworkPolicies": "Enabled",
+        "privateLinkServiceNetworkPolicies": "Enabled",
+        "serviceEndpoints": []
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]",
+        "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2021-02-01",
+      "name": "[format('{0}-nic', parameters('vmName'))]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig",
+            "properties": {
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
+              },
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": null
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2021-02-01",
+      "name": "[format('{0}-publicip', parameters('vmName'))]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic"
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2021-03-01",
+      "name": "[parameters('vmName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_B1s"
+        },
+        "storageProfile": {
+          "osDisk": {
+            "createOption": "FromImage",
+            "name": "[format('{0}-osdisk', parameters('vmName'))]",
+            "caching": "ReadWrite",
+            "diskSizeGB": 128,
+            "managedDisk": {
+              "storageAccountType": "[parameters('osDiskType')]"
+            }
+          },
+          "imageReference": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2016-Datacenter",
+            "version": "latest"
+          }
+        },
+        "osProfile": {
+          "computerName": "[parameters('vmName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]",
+          "windowsConfiguration": {
+            "enableAutomaticUpdates": true,
+            "provisionVMAgent": true
+          },
+          "secrets": []
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', format('{0}-nic', parameters('vmName')))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": ""
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', format('{0}-nic', parameters('vmName')))]"
+      ]
+    }
+  ]
+}
