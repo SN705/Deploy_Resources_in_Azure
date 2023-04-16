@@ -37,5 +37,5 @@ jobs:
             az deployment sub create --name ${{ env.DEPLOYMENT_NAME }} --location ${{ env.METADATA_REGION }} --template-uri \
               https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/${{ env.RESOURCE_GROUP_BRANCH }}/${{ env.RESOURCE_GROUP_FILE_NAME }} \
               --parameters https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/${{ env.RESOURCE_GROUP_BRANCH }}/${{ env.RESOURCE_GROUP_PARAMETERS_FILE_NAME }}
-            az deployment group create --resource-group ${{ env.RESOURCE_GROUP_NAME }} --template-uri \
+            az deployment group create --resource-group DSRG1 --template-uri \
               https://raw.githubusercontent.com/SN705/Deploy_Resources_in_Azure/${{ env.RESOURCE_GROUP_BRANCH }}/${{ env.WEB_SERVER_FILE_NAME }}
